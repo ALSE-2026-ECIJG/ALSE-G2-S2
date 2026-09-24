@@ -27,7 +27,6 @@ private:
 public:
 
     Spreadsheet(int rows) {
-
         hoja = vector<vector<int>>(rows, vector<int>(26, 0));
     }
 
@@ -60,3 +59,24 @@ public:
         return valorIzquierda + valorDerecha;
     }
 };
+
+
+int main() {
+
+    Spreadsheet hoja(3);
+
+    hoja.setCell("A1", 5);
+    hoja.setCell("B2", 10);
+
+    cout << "A1 + B2 = "
+         << hoja.getValue("=A1+B2")
+         << endl;
+
+    hoja.resetCell("A1");
+
+    cout << "A1 despues de resetear = "
+         << hoja.getValue("=A1+0")
+         << endl;
+
+    return 0;
+}

@@ -32,12 +32,10 @@ public:
 
         vector<pair<int, int>> todosLosTweets;
 
-        // Tweets del mismo usuario
         for (auto tweet : tweets[userId]) {
             todosLosTweets.push_back(tweet);
         }
 
-        // Tweets de los usuarios que sigue
         for (int usuario : seguidores[userId]) {
 
             for (auto tweet : tweets[usuario]) {
@@ -45,7 +43,6 @@ public:
             }
         }
 
-        // Ordenar del más reciente al más antiguo
         sort(todosLosTweets.begin(), todosLosTweets.end(),
              [](pair<int, int> a, pair<int, int> b) {
                  return a.second > b.second;
@@ -53,7 +50,6 @@ public:
 
         vector<int> resultado;
 
-        // Guardar máximo 10 tweets
         for (int i = 0; i < todosLosTweets.size() && i < 10; i++) {
             resultado.push_back(todosLosTweets[i].first);
         }
@@ -62,12 +58,33 @@ public:
     }
 
     void follow(int followerId, int followeeId) {
-
         seguidores[followerId].insert(followeeId);
     }
 
     void unfollow(int followerId, int followeeId) {
-
         seguidores[followerId].erase(followeeId);
     }
 };
+
+
+int main() {
+
+    Twitter twitter;
+
+    twitter.postTweet(1, 101);
+    twitter.postTweet(1, 102);
+
+    twitter.follow(2, 1);
+
+    vector<int> noticias = twitter.getNewsFeed(2);
+
+    cout << "Feed del usuario 2: ";
+
+    for (int tweet : noticias) {
+        cout << tweet << " ";
+    }
+
+    cout << endl;
+
+    return 0;
+}

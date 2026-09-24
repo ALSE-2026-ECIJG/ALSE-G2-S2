@@ -14,7 +14,6 @@ private:
 public:
 
     Robot(int xInicial, int yInicial, char direccionInicial) {
-
         x = xInicial;
         y = yInicial;
         direccion = direccionInicial;
@@ -93,12 +92,42 @@ public:
             if (instruccion == 'R') {
                 girarDerecha();
             }
+
             else if (instruccion == 'L') {
                 girarIzquierda();
             }
+
             else if (instruccion == 'A') {
                 avanzar();
             }
         }
     }
+
+    void mostrarPosicion() {
+
+        cout << "Posicion: ("
+             << x << ", "
+             << y << ")"
+             << endl;
+
+        cout << "Direccion: "
+             << direccion
+             << endl;
+    }
 };
+
+
+int main() {
+
+    Robot robot(0, 0, 'N');
+
+    cout << "Estado inicial:" << endl;
+    robot.mostrarPosicion();
+
+    robot.ejecutar("AARAALA");
+
+    cout << "\nEstado final:" << endl;
+    robot.mostrarPosicion();
+
+    return 0;
+}
