@@ -1,0 +1,1 @@
+add_executable(design_authentication_manager main.cpp AuthenticationManager.cpp AuthenticationManager.h)
