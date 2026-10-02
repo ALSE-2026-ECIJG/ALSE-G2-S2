@@ -82,3 +82,5 @@ obj/
 ejemplo1/archivosPractica.zip
 ejemplo1/aux_*
 ejemplo1/anot*
+*.pdb
+*.ilk
