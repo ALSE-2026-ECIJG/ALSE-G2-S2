@@ -1,0 +1,33 @@
+classDiagram
+    class Vehiculo {
+        <<abstract>>
+        #string marca_
+        #string modelo_
+        #string placa_
+        #bool disponible_
+        +alquilar() void
+        +devolver() void
+        +mostrarInformacion() void
+    }
+
+    class Auto {
+        -int capacidadPasajeros_
+        +mostrarInformacion() void
+    }
+
+    class Bicicleta {
+        -string tipo_
+        +mostrarInformacion() void
+    }
+
+    class SistemaAlquiler {
+        -vector~unique_ptr~Vehiculo~~ vehiculos_
+        +registrarVehiculo(vehiculo) void
+        +alquilarVehiculo(placa) bool
+        +devolverVehiculo(placa) bool
+        +mostrarDisponibles() void
+    }
+
+    Vehiculo <|-- Auto : herencia
+    Vehiculo <|-- Bicicleta : herencia
+    SistemaAlquiler "1" *-- "0..*" Vehiculo : composición

@@ -1,0 +1,52 @@
+classDiagram
+    class Producto {
+        -string nombre_
+        -double precio_
+        -int stock_
+        +Producto(nombre, precio, stock)
+        +getNombre() string
+        +getPrecio() double
+        +getStock() int
+        +reducirStock(cantidad) bool
+        +aumentarStock(cantidad) void
+    }
+
+    class ItemCarrito {
+        -Producto* producto_
+        -int cantidad_
+        +ItemCarrito(producto, cantidad)
+        +getProducto() Producto*
+        +getCantidad() int
+        +setCantidad(cantidad) void
+        +calcularSubtotal() double
+    }
+
+    class CarritoCompras {
+        -vector~ItemCarrito~ items_
+        +agregarProducto(producto, cantidad) bool
+        +eliminarProducto(nombreProducto) bool
+        +calcularTotal() double
+        +mostrarCarrito() void
+        +vaciarCarrito() void
+        +getItems() vector~ItemCarrito~
+    }
+
+    class RegistroCompra {
+        +string detalle
+        +double total
+    }
+
+    class Usuario {
+        -string nombre_
+        -vector~RegistroCompra~ historial_
+        +Usuario(nombre)
+        +getNombre() string
+        +agregarCompraAlHistorial(carrito) void
+        +mostrarHistorial() void
+        +getHistorial() vector~RegistroCompra~
+    }
+
+    CarritoCompras "1" *-- "0..*" ItemCarrito : composición
+    ItemCarrito "0..*" o-- "1" Producto : agregación
+    Usuario "1" *-- "0..*" RegistroCompra : composición
+    Usuario ..> CarritoCompras : dependencia
