@@ -1,61 +1,76 @@
+
 #include "Usuario.h"
 
 #include <iomanip>
 #include <iostream>
 #include <sstream>
 
-Usuario::Usuario(const std::string& nombre) : nombre_(nombre) {
+Usuario::Usuario(const std::string& nombre)
+    : nombre_(nombre) {
 }
 
 std::string Usuario::getNombre() const {
     return nombre_;
 }
 
-void Usuario::agregarCompraAlHistorial(CarritoCompras& carrito) {
+void Usuario::agregarCompraAlHistorial(
+    CarritoCompras& carrito) {
+
     if (carrito.getItems().empty()) {
-        std::cout << "El carrito está vacío; no hay compra que registrar.\n";
+        std::cout << "El carrito esta vacio. "
+                  << "No hay compra que registrar.\n";
         return;
     }
 
-    // Construimos el texto descriptivo ANTES de vaciar el carrito,
-    // recorriendo sus ítems actuales.
+    // Guardar una copia del detalle antes de limpiar el carrito.
     std::ostringstream detalle;
     bool primero = true;
+
     for (const ItemCarrito& item : carrito.getItems()) {
         if (!primero) {
             detalle << ", ";
         }
-        detalle << item.getCantidad() << "x " << item.getProducto()->getNombre();
+
+        detalle << item.getCantidad() << "x "
+                << item.getProducto()->getNombre();
+
         primero = false;
     }
 
-    RegistroCompra registro{detalle.str(), carrito.calcularTotal()};
-    historial_.push_back(registro);
+    double total = carrito.calcularTotal();
 
-    // Ahora sí, vaciamos el carrito (esto además devuelve el stock
-    // reservado... en un sistema real, aquí en cambio se confirmaría
-    // la venta y el stock NO se devolvería; lo dejamos así para
-    // mantener el ejemplo simple -- ver sección de mejoras).
-    carrito.vaciarCarrito();
+    // Guardar la compra en el historial.
+    historial_.push_back({detalle.str(), total});
+
+    // Confirmar la venta sin restaurar el inventario.
+    carrito.confirmarCompra();
+
+    std::cout << "Compra confirmada correctamente.\n";
+    std::cout << "Total pagado: $" << std::fixed
+              << std::setprecision(2) << total << '\n';
 }
 
 void Usuario::mostrarHistorial() const {
-    std::cout << "--- Historial de compras de " << nombre_ << " ---\n";
+    std::cout << "\n--- Historial de compras de "
+              << nombre_ << " ---\n";
 
     if (historial_.empty()) {
-        std::cout << "  (Sin compras registradas)\n";
+        std::cout << "No hay compras registradas.\n";
         return;
     }
 
     std::cout << std::fixed << std::setprecision(2);
+
     int numero = 1;
+
     for (const RegistroCompra& compra : historial_) {
-        std::cout << "  " << numero << ". " << compra.detalle << " -> Total: $" << compra.total
-                   << "\n";
-        ++numero;
+        std::cout << numero++ << ". "
+                  << compra.detalle
+                  << " -> Total: $" << compra.total << '\n';
     }
 }
 
-const std::vector<RegistroCompra>& Usuario::getHistorial() const {
+const std::vector<RegistroCompra>&
+Usuario::getHistorial() const {
     return historial_;
 }
