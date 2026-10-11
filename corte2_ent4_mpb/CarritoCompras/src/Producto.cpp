@@ -1,31 +1,38 @@
 #include "Producto.h"
+#include <stdexcept>
 
 Producto::Producto(const std::string& nombre, double precio, int stock)
-    : nombre_(nombre), precio_(precio), stock_(stock) {
+    : nombre(nombre), precio(precio), stock(stock) {
+    if (precio < 0 || stock < 0) {
+        throw std::invalid_argument(
+            "El precio y el stock no pueden ser negativos."
+        );
+    }
 }
 
 std::string Producto::getNombre() const {
-    return nombre_;
+    return nombre;
 }
 
 double Producto::getPrecio() const {
-    return precio_;
+    return precio;
 }
 
 int Producto::getStock() const {
-    return stock_;
+    return stock;
 }
 
 bool Producto::reducirStock(int cantidad) {
-    if (cantidad <= 0 || cantidad > stock_) {
-        return false; // no hay suficiente stock (o cantidad inválida)
+    if (cantidad <= 0 || cantidad > stock) {
+        return false;
     }
-    stock_ -= cantidad;
+
+    stock -= cantidad;
     return true;
 }
 
 void Producto::aumentarStock(int cantidad) {
     if (cantidad > 0) {
-        stock_ += cantidad;
+        stock += cantidad;
     }
 }
