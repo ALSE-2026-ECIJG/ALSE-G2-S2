@@ -1,0 +1,2 @@
+Diagrama UML: UML_Biblioteca.png
+El diagrama representa las clases Libro y Biblioteca, sus atributos y metodos, y la relacion de colección de libros.
